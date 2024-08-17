@@ -7,7 +7,7 @@ import 'package:offers/repositories/api_impl.dart';
 import 'package:offers/repositories/log.dart';
 import 'package:offers/repositories/log_impl.dart';
 import 'package:offers/routes.dart';
-import 'package:offers/widgets/screens/home_screen.dart';
+import 'package:offers/widgets/screens/list_offer/list_offer.dart';
 
 void main() {
   runApp(
@@ -55,8 +55,8 @@ class App extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
+          primaryColor: AppColors.primaryColor,
         ),
         onGenerateRoute: mainRoute,
         initialRoute: RouteList.home,
