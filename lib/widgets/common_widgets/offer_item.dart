@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:offers/common/constants.dart';
@@ -8,12 +10,12 @@ import 'package:offers/widgets/common_widgets/common_button.dart';
 class OfferItem extends StatelessWidget {
   const OfferItem({
     super.key,
-    this.image,
     required this.offer,
     this.height,
     this.width,
+    this.onTap,
   });
-  final String? image;
+  final Function()? onTap;
   final Offer offer;
   final double? height;
   final double? width;
@@ -21,28 +23,65 @@ class OfferItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: height ?? 150,
-      width: width ?? 100,
+      constraints: const BoxConstraints(minHeight: 130),
       margin: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          width: 2,
+          width: 1.5,
           color: AppColors.borderColor,
         ),
+        gradient: LinearGradient(
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
+          colors: AppColors.gradientColors,
+        ),
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Expanded(
-            flex: 5,
-            child: _buildTopComponent(),
+      height: height,
+      width: width,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(8),
+          splashColor: Colors.black.withOpacity(0.3),
+          child: Container(
+            child: Stack(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildTitle(),
+                          _buildDiscountPrice(),
+                          _buildDescription(),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                Positioned(
+                  top: 10,
+                  right: 10,
+                  child: _buildDiscountPercent(),
+                ),
+                Positioned(
+                  bottom: 10,
+                  right: 10,
+                  child: CommonButton(
+                    backgroundColor: AppColors.textColor,
+                    onTap: () {},
+                    title: 'Buy now',
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                  ),
+                ),
+              ],
+            ),
           ),
-          Expanded(
-            flex: 2,
-            child: _buildBottomComponent(),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -89,7 +128,9 @@ class OfferItem extends StatelessWidget {
           child: Container(
             child: Text(
               offer.description,
-              style: TextStyle(),
+              style: TextStyle(
+                color: AppColors.white,
+              ),
               maxLines: 5,
               overflow: TextOverflow.ellipsis,
             ),
@@ -110,22 +151,26 @@ class OfferItem extends StatelessWidget {
       children: [
         Text(
           originalPriceHandle,
-          style: const TextStyle(
+          style: TextStyle(
             decoration: TextDecoration.lineThrough,
+            decorationColor: AppColors.white,
+            decorationThickness: 1.5,
             fontSize: 20,
             fontWeight: FontWeight.w300,
+            color: AppColors.white,
           ),
         ),
         Icon(
           Icons.arrow_forward,
           applyTextScaling: false,
-          color: AppColors.black.withOpacity(0.5),
+          color: AppColors.textColor.withOpacity(0.9),
           size: 24,
         ),
         Text(
           discountedPriceHandle,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 20,
+            color: AppColors.white,
           ),
         ),
       ],
@@ -140,7 +185,7 @@ class OfferItem extends StatelessWidget {
         Text(
           offer.title,
           style: TextStyle(
-            color: AppColors.black,
+            color: AppColors.textColor,
             fontWeight: FontWeight.w800,
             fontSize: 18,
           ),
@@ -154,7 +199,6 @@ class OfferItem extends StatelessWidget {
     return Stack(
       fit: StackFit.expand,
       children: [
-        _buildImage(),
         _buildDiscountPercent(),
       ],
     );
@@ -164,7 +208,7 @@ class OfferItem extends StatelessWidget {
     return Align(
       alignment: Alignment.bottomRight,
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(12),
         decoration: const BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.red,
@@ -177,19 +221,6 @@ class OfferItem extends StatelessWidget {
             fontSize: 16,
           ),
         ),
-      ),
-    );
-  }
-
-  Container _buildImage() {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20),
-      decoration: const BoxDecoration(
-        color: Colors.transparent,
-      ),
-      child: CachedNetworkImage(
-        fit: BoxFit.cover,
-        imageUrl: AppImages.imgDemo2,
       ),
     );
   }

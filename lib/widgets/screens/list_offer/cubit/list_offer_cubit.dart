@@ -8,10 +8,12 @@ part 'list_offer_state.dart';
 
 class ListOfferCubit extends Cubit<ListOfferState> {
   Api api;
-  ListOfferCubit(this.api) : super(const ListOfferState.init());
+  ListOfferCubit(this.api) : super(ListOfferState.init());
 
   Future<void> loadData() async {
     emit(state.copyWith(loadStatus: LoadStatus.Loading));
+    await Future.delayed(const Duration(seconds: 1));
+    emit(state.copyWith(loadStatus: LoadStatus.Done));
   }
 
   Future<void> deleteOffer(String id) async {}

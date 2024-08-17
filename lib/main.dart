@@ -7,7 +7,7 @@ import 'package:offers/repositories/api_impl.dart';
 import 'package:offers/repositories/log.dart';
 import 'package:offers/repositories/log_impl.dart';
 import 'package:offers/routes.dart';
-import 'package:offers/widgets/screens/list_offer/list_offer.dart';
+import 'package:offers/widgets/screens/list_offer/list_offer_screen.dart';
 
 void main() {
   runApp(

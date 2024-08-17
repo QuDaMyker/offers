@@ -10,10 +10,70 @@ class ListOfferState extends Equatable {
     required this.offers,
   });
 
-  const ListOfferState.init({
-    this.loadStatus = LoadStatus.Init,
-    this.offers = const [],
-  });
+  factory ListOfferState.init() {
+    return ListOfferState(
+      loadStatus: LoadStatus.Init,
+      offers: [
+        Offer(
+          title: 'title',
+          description: 'description',
+          discountPercentage: 10,
+          originalPrice: 100,
+          discountedPrice: 90,
+          createdAt: DateTime.now(),
+        ),
+        Offer(
+          title: 'title',
+          description: 'description',
+          discountPercentage: 10,
+          originalPrice: 100,
+          discountedPrice: 90,
+          createdAt: DateTime.now(),
+        ),
+        Offer(
+          title: 'title',
+          description: 'description',
+          discountPercentage: 10,
+          originalPrice: 100,
+          discountedPrice: 90,
+          createdAt: DateTime.now(),
+        ),
+        Offer(
+          title: 'title',
+          description: 'description',
+          discountPercentage: 10,
+          originalPrice: 100,
+          discountedPrice: 90,
+          createdAt: DateTime.now(),
+        ),
+        Offer(
+          title: 'title',
+          description: 'description',
+          discountPercentage: 10,
+          originalPrice: 100,
+          discountedPrice: 90,
+          createdAt: DateTime.now(),
+        ),
+        Offer(
+          title: 'title',
+          description: 'description',
+          discountPercentage: 10,
+          originalPrice: 100,
+          discountedPrice: 90,
+          createdAt: DateTime.now(),
+        ),
+        Offer(
+          title: 'title',
+          description: 'description',
+          discountPercentage: 10,
+          originalPrice: 100,
+          discountedPrice: 90,
+          createdAt: DateTime.now(),
+        ),
+      ],
+    );
+  }
+
   @override
   List<Object> get props => [loadStatus, offers];
 
