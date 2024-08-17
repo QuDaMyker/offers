@@ -14,4 +14,9 @@ class Helper {
     );
     return format.format(value);
   }
+
+  String formatDateTimeToHHMMDdMmYyyy(DateTime date) {
+    final formatter = DateFormat('hh:mm, dd-MM-yyyy');
+    return formatter.format(date);
+  }
 }

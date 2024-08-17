@@ -2,7 +2,7 @@
 import 'dart:convert';
 
 class Offer {
-  final int? id;
+  final String? id;
   final String title;
   final String description;
   final double discountPercentage;
@@ -22,7 +22,7 @@ class Offer {
   });
 
   Offer copyWith({
-    int? id,
+    String? id,
     String? title,
     String? description,
     double? discountPercentage,
@@ -58,7 +58,7 @@ class Offer {
 
   factory Offer.fromMap(Map<String, dynamic> map) {
     return Offer(
-      id: map['id'] != null ? map['id'] as int : null,
+      id: map['id'] != null ? map['id'] as String : null,
       title: map['title'] as String,
       description: map['description'] as String,
       discountPercentage: map['discountPercentage'] as double,

@@ -15,6 +15,7 @@ class ListOfferState extends Equatable {
       loadStatus: LoadStatus.Init,
       offers: [
         Offer(
+          id: '1',
           title: 'title',
           description: 'description',
           discountPercentage: 10,
@@ -23,6 +24,7 @@ class ListOfferState extends Equatable {
           createdAt: DateTime.now(),
         ),
         Offer(
+          id: '1',
           title: 'title',
           description: 'description',
           discountPercentage: 10,
@@ -31,6 +33,7 @@ class ListOfferState extends Equatable {
           createdAt: DateTime.now(),
         ),
         Offer(
+          id: '1',
           title: 'title',
           description: 'description',
           discountPercentage: 10,
@@ -39,6 +42,7 @@ class ListOfferState extends Equatable {
           createdAt: DateTime.now(),
         ),
         Offer(
+          id: '1',
           title: 'title',
           description: 'description',
           discountPercentage: 10,
@@ -47,6 +51,7 @@ class ListOfferState extends Equatable {
           createdAt: DateTime.now(),
         ),
         Offer(
+          id: '1',
           title: 'title',
           description: 'description',
           discountPercentage: 10,
@@ -55,6 +60,7 @@ class ListOfferState extends Equatable {
           createdAt: DateTime.now(),
         ),
         Offer(
+          id: '1',
           title: 'title',
           description: 'description',
           discountPercentage: 10,
@@ -63,6 +69,7 @@ class ListOfferState extends Equatable {
           createdAt: DateTime.now(),
         ),
         Offer(
+          id: '1',
           title: 'title',
           description: 'description',
           discountPercentage: 10,

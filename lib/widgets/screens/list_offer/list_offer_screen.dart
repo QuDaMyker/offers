@@ -6,8 +6,10 @@ import 'package:offers/common/constants.dart';
 import 'package:offers/common/enum/load_staus.dart';
 import 'package:offers/models/offer.dart';
 import 'package:offers/repositories/api.dart';
+import 'package:offers/widgets/common_widgets/base_dialog.dart';
 import 'package:offers/widgets/common_widgets/noti_bar.dart';
 import 'package:offers/widgets/common_widgets/offer_item.dart';
+import 'package:offers/widgets/screens/edit_offer/cubit/edit_offer_cubit.dart';
 import 'package:offers/widgets/screens/edit_offer/edit_offer.dart';
 import 'package:offers/widgets/screens/list_offer/cubit/list_offer_cubit.dart';
 
@@ -30,23 +32,6 @@ class Page extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text('Offer list page'),
-      // ),
-      backgroundColor: AppColors.bgColor,
-      body: Body(),
-    );
-  }
-}
-
-class Body extends StatelessWidget {
-  const Body({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
     return BlocConsumer<ListOfferCubit, ListOfferState>(
       listener: (context, state) {
         if (state.loadStatus == LoadStatus.Error) {
@@ -55,62 +40,119 @@ class Body extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        return state.loadStatus == LoadStatus.Loading
-            ? Center(
-                child: loadingWidget(),
-              )
-            : Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                child: ListView.separated(
-                  separatorBuilder: (context, index) => Container(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 12,
+        return Scaffold(
+          floatingActionButton: Container(
+            padding: const EdgeInsets.all(2),
+            decoration: BoxDecoration(
+              color: AppColors.textColor,
+              shape: BoxShape.circle,
+            ),
+            child: IconButton(
+              onPressed: () => editOffer(
+                context: context,
+                addNew: true,
+              ),
+              icon: Icon(
+                Icons.add,
+                color: AppColors.white,
+              ),
+            ),
+          ),
+          backgroundColor: AppColors.bgColor,
+          body: state.loadStatus == LoadStatus.Loading
+              ? Center(
+                  child: loadingWidget(),
+                )
+              : Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: ListView.separated(
+                    separatorBuilder: (context, index) => Container(
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                      ),
+                      child: const Divider(),
                     ),
-                    child: const Divider(),
+                    itemCount: state.offers.length,
+                    itemBuilder: (context, index) {
+                      Offer offer = state.offers[index];
+                      return Slidable(
+                        key: UniqueKey(),
+                        endActionPane: ActionPane(
+                          motion: const ScrollMotion(),
+                          children: [
+                            SlidableAction(
+                              onPressed: (context) => editOffer(
+                                context: context,
+                                offer: offer,
+                                addNew: false,
+                              ),
+                              backgroundColor: AppColors.editColor,
+                              foregroundColor: AppColors.white,
+                              icon: Icons.edit,
+                              label: 'Edit',
+                            ),
+                            SlidableAction(
+                              onPressed: (context) {
+                                showDialog(
+                                  barrierColor: Colors.transparent,
+                                  context: context,
+                                  useSafeArea: true,
+                                  builder: (ctx) => BaseDialog(
+                                    message:
+                                        'Do you want to delete this offer?',
+                                    onOK: () {
+                                      Navigator.of(ctx).pop();
+                                    },
+                                    onCancel: () {
+                                      Navigator.of(ctx).pop();
+                                    },
+                                  ),
+                                ).then((value) => null);
+                              },
+                              backgroundColor: AppColors.deleteColor,
+                              foregroundColor: AppColors.white,
+                              icon: Icons.delete,
+                              label: 'Delete',
+                            ),
+                          ],
+                        ),
+                        child: OfferItem(
+                          offer: offer,
+                        ),
+                      );
+                    },
                   ),
-                  itemCount: state.offers.length,
-                  itemBuilder: (context, index) {
-                    Offer offer = state.offers[index];
-                    return Slidable(
-                      key: UniqueKey(),
-                      endActionPane: ActionPane(
-                        motion: const ScrollMotion(),
-                        children: [
-                          SlidableAction(
-                            onPressed: (context) {},
-                            backgroundColor: AppColors.editColor,
-                            foregroundColor: AppColors.white,
-                            icon: Icons.edit,
-                            label: 'Edit',
-                          ),
-                          SlidableAction(
-                            onPressed: (context) {},
-                            backgroundColor: AppColors.deleteColor,
-                            foregroundColor: AppColors.white,
-                            icon: Icons.delete,
-                            label: 'Delete',
-                          ),
-                        ],
-                      ),
-                      child: OfferItem(
-                        onTap: () => showBottomSheetOffer(
-                            context: context, offer: offer),
-                        offer: offer,
-                      ),
-                    );
-                  },
                 ),
-              );
+        );
       },
     );
   }
+}
 
-  showBottomSheetOffer({required BuildContext context, required Offer offer}) {
-    showBottomSheet(
-      context: context,
-      builder: (ctx) {
-        return EditOffer();
-      },
-    );
-  }
+editOffer({
+  required BuildContext context,
+  Offer? offer,
+  bool addNew = false,
+}) {
+  showModalBottomSheet(
+    isDismissible: false,
+    context: context,
+    isScrollControlled: true,
+    backgroundColor: AppColors.white,
+    builder: (ctx) {
+      return BlocProvider(
+        create: (context) => EditOfferCubit(context.read<Api>(), offer),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(12),
+            topRight: Radius.circular(12),
+          ),
+          child: EditOffer(
+            offer: offer,
+            addNew: addNew,
+          ),
+        ),
+      );
+    },
+  );
 }
