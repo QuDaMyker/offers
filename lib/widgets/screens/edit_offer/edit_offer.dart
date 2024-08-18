@@ -22,8 +22,8 @@ class EditOffer extends StatelessWidget {
     return BlocConsumer<EditOfferCubit, EditOfferState>(
       listener: (context, state) {
         if (state.loadStatus == LoadStatus.Error) {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(notiBar("Update Offer Error", true));
+          ScaffoldMessenger.of(context).showSnackBar(notiBar(
+              addNew ? "Error create offer" : "Update Offer Error", true));
         }
         if (state.loadStatus == LoadStatus.Done) {
           Navigator.of(context).pop();
@@ -124,7 +124,7 @@ class EditOffer extends StatelessWidget {
                         : offer!.updatedAt == null
                             ? const SizedBox()
                             : CustomRow(
-                                title: 'UpdateAt',
+                                title: 'LastUpdateAt',
                                 enable: false,
                                 controller: state.updateAtPriceController,
                               ),
@@ -164,7 +164,7 @@ class EditOffer extends StatelessWidget {
   AppBar _buildAppbar(BuildContext context) {
     return AppBar(
       centerTitle: true,
-      title: const Text('Edit Offer'),
+      title: Text(addNew ? 'Add New Offer' : 'Edit Offer'),
       backgroundColor: AppColors.white,
       actions: [
         IconButton(

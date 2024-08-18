@@ -16,9 +16,31 @@ class EditOfferCubit extends Cubit<EditOfferState> {
   EditOfferCubit(this.api, this.offer) : super(EditOfferState.init(offer));
   final GlobalKey<FormState> formKeyLogin = GlobalKey<FormState>();
   Future<void> addOffer() async {
-    emit(state.copyWith(loadStatus: LoadStatus.Loading));
-    await Future.delayed(const Duration(seconds: 1));
-    emit(state.copyWith(loadStatus: LoadStatus.Done));
+    if (formKeyLogin.currentState!.validate()) {
+      formKeyLogin.currentState!.save();
+
+      emit(state.copyWith(loadStatus: LoadStatus.Loading));
+
+      Offer? offer = await api.createOffer(
+        Offer(
+          title: state.titleController.text.trim(),
+          description: state.descriptionController.text.trim(),
+          discountPercentage:
+              double.parse(state.discountPercentageController.text.trim()),
+          originalPrice:
+              double.parse(state.originalPriceController.text.trim()),
+          discountedPrice:
+              double.parse(state.discountedPriceController.text.trim()),
+          createdAt: DateTime.now(),
+        ),
+      );
+
+      emit(
+        state.copyWith(
+          loadStatus: offer != null ? LoadStatus.Done : LoadStatus.Error,
+        ),
+      );
+    } else {}
   }
 
   Future<void> editOffer(Offer offer) async {
@@ -26,7 +48,6 @@ class EditOfferCubit extends Cubit<EditOfferState> {
       formKeyLogin.currentState!.save();
 
       emit(state.copyWith(loadStatus: LoadStatus.Loading));
-      await Future.delayed(const Duration(seconds: 1));
       offer = offer.copyWith(
         title: state.titleController.text.trim(),
         description: state.descriptionController.text.trim(),
@@ -42,7 +63,8 @@ class EditOfferCubit extends Cubit<EditOfferState> {
   void onChangePrice(String value) {
     try {
       double price = double.parse(state.originalPriceController.text.trim());
-      double discount = double.parse(value.trim());
+      double discount =
+          double.parse(state.discountPercentageController.text.trim());
 
       double discountedPrice = price - (price * discount / 100);
 

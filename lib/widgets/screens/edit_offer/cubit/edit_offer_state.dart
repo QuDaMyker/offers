@@ -38,9 +38,9 @@ class EditOfferState extends Equatable {
       discountedPriceController:
           TextEditingController(text: offer?.discountedPrice.toString()),
       createAtPriceController: TextEditingController(
-        text: offer != null
+        text: offer != null && offer.createdAt != null
             ? Helper().formatDateTimeToHHMMDdMmYyyy(
-                offer.createdAt,
+                offer.createdAt!,
               )
             : null,
       ),

@@ -16,8 +16,37 @@ class ApiImpl implements Api {
         dio = Dio();
 
   @override
-  Future<Offer?> createOffer(Offer offer) {
-    throw UnimplementedError();
+  Future<Offer?> createOffer(Offer offer) async {
+    final String url = '$domain/offer-services/offers';
+    Response response;
+
+    try {
+      final offerJson = offer.toJson();
+
+      Map<String, dynamic> offerData = {
+        "title": offer.title,
+        "description": offer.description,
+        "discountPercentage": offer.discountPercentage,
+        "originalPrice": offer.originalPrice,
+        "discountedPrice": offer.discountedPrice,
+      };
+
+      log.i('createOffer', offerJson);
+      response = await dio.post(
+        url,
+        data: offerData,
+      );
+
+      if (response.statusCode == 200) {
+        return Offer.fromJson(json.encode(response.data['result']));
+      } else {
+        log.e('createOffer', 'Failed to create offer: ${response.statusCode}');
+        return null;
+      }
+    } catch (e) {
+      log.e('Error creating offer', e.toString());
+      return null;
+    }
   }
 
   @override

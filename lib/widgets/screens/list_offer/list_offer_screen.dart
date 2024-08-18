@@ -65,8 +65,8 @@ class Page extends StatelessWidget {
             enablePullDown: true,
             enablePullUp: true,
             controller: state.refreshController,
-            onRefresh: context.read<ListOfferCubit>().onRefresh,
-            onLoading: context.read<ListOfferCubit>().onLoading,
+            onRefresh: () => context.read<ListOfferCubit>().onRefresh(),
+            onLoading: () => context.read<ListOfferCubit>().onLoading(),
             child: state.loadStatus == custom.LoadStatus.Loading &&
                     state.offers.isEmpty
                 ? Center(

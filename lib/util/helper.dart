@@ -19,4 +19,9 @@ class Helper {
     final formatter = DateFormat('hh:mm, dd-MM-yyyy');
     return formatter.format(date);
   }
+
+  String formatDateTimeToString(DateTime dateTime) {
+    final DateFormat formatter = DateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+    return formatter.format(dateTime);
+  }
 }
