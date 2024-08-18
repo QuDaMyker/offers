@@ -14,6 +14,15 @@
 - Display a “Buy Now” button on each offer.
 - CRUD for Offer Feature
 
+- Flutter:
+  * Version 3.22.3
+  * State Management: Bloc
+  * Lib Support: flutter_dotenv, dio, into, loading_animation_widget, flutter_slidable
+- Backend:
+  * Spring Boot 3
+  * MongoDB
+  * Docker
+
 ## Prerequisites
 
 Before you begin, ensure you have met the following requirements:
