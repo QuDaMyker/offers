@@ -1,13 +1,13 @@
 # Offers
 - Flutter Mobile App: `https://github.com/QuDaMyker/offers`
-- Backedn Spring Boot: `https://github.com/QuDaMyker/offer_core`
+- Backend Spring Boot: `https://github.com/QuDaMyker/offer_core`
 
 ## Overview
 
 - Create a simple page where users can view a list of available offers.
 - Each offer should display relevant details like
-   * title
-   * description
+   * Title
+   * Description
    * discount percentage
    * original price
    * discounted price
@@ -40,7 +40,7 @@ Before you begin, ensure you have met the following requirements:
 
 ## Usage
 
-Template API - `Because the requirement just focus on API for Offer, Api Authenticate user will be ignored`
+Template API - `Because the requirement just focuses on API for Offer, Api Authenticate user will be ignored`
 Be
 
 Example:
