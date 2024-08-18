@@ -4,17 +4,17 @@ part of 'list_offer_cubit.dart';
 class ListOfferState extends Equatable {
   final custom.LoadStatus loadStatus;
   final List<Offer> offers;
-  final RefreshController refreshController;
+  final int pageId;
 
   const ListOfferState({
     required this.loadStatus,
     required this.offers,
-    required this.refreshController,
+    required this.pageId,
   });
 
   factory ListOfferState.init() {
     return ListOfferState(
-      refreshController: RefreshController(initialRefresh: false),
+      pageId: 1,
       loadStatus: custom.LoadStatus.Init,
       offers: [
         // Offer(
@@ -85,15 +85,12 @@ class ListOfferState extends Equatable {
   }
 
   @override
-  List<Object> get props => [loadStatus, offers, refreshController];
+  List<Object> get props => [loadStatus, offers, pageId];
 
-  ListOfferState copyWith({
-    custom.LoadStatus? loadStatus,
-    List<Offer>? offers,
-    RefreshController? refreshController,
-  }) {
+  ListOfferState copyWith(
+      {custom.LoadStatus? loadStatus, List<Offer>? offers, int? pageId}) {
     return ListOfferState(
-      refreshController: refreshController ?? this.refreshController,
+      pageId: pageId ?? this.pageId,
       loadStatus: loadStatus ?? this.loadStatus,
       offers: offers ?? this.offers,
     );

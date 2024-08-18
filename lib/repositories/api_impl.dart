@@ -74,7 +74,8 @@ class ApiImpl implements Api {
     required int pageId,
     int pageSize = 5,
   }) async {
-    final String url = '$domain/offer-services/offers?limit=10&offset=1';
+    final String url =
+        '$domain/offer-services/offers?limit=$pageSize&offset=$pageId';
     Response response;
 
     try {

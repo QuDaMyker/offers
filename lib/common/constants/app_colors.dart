@@ -4,7 +4,7 @@ class AppColors {
   static Color get black => Colors.black;
   static Color get white => Colors.white;
   // static Color get bgColor => const Color(0xfff3deb7);
-  static Color get bgColor => Colors.white;
+  static Color get bgColor => Color.fromARGB(255, 45, 112, 235);
   static List<Color> get gradientColors => const [
         Color(0xff040819),
         Color.fromARGB(255, 7, 13, 34),

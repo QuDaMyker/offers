@@ -27,6 +27,7 @@ class OfferItem extends StatelessWidget {
     return Container(
       constraints: const BoxConstraints(minHeight: 130),
       margin: const EdgeInsets.symmetric(horizontal: 12),
+      padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
@@ -47,76 +48,49 @@ class OfferItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           splashColor: Colors.black.withOpacity(0.3),
           child: Container(
-            child: Stack(
+            child: ClipRect(
+                child: Column(
               children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _buildTitle(),
-                          _buildDiscountPrice(),
-                          _buildDescription(),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-                Positioned(
-                  top: 10,
-                  right: 10,
-                  child: _buildDiscountPercent(),
-                ),
-                Positioned(
-                  bottom: 10,
-                  right: 10,
-                  child: CommonButton(
-                    backgroundColor: AppColors.textColor,
-                    onTap: onBuyNow ?? () {},
-                    title: 'Buy now',
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                  ),
-                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Stack(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            _buildTitle(),
+                            _buildDiscountPrice(),
+                          ],
+                        ),
+                        _buildDiscountPercent(),
+                      ],
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 10, top: 10),
+                      child: Text(
+                        offer.description,
+                        style: TextStyle(
+                          color: AppColors.white,
+                        ),
+                        maxLines: 5,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    CommonButton(
+                      backgroundColor: AppColors.textColor,
+                      onTap: onBuyNow ?? () {},
+                      title: 'Buy now',
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                    ),
+                  ],
+                )
               ],
-            ),
+            )),
           ),
         ),
-      ),
-    );
-  }
-
-  Container _buildBottomComponent() {
-    return Container(
-      padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Expanded(
-            child: _buildTitle(),
-          ),
-          Expanded(
-            child: _buildDiscountPrice(),
-          ),
-          Expanded(
-            flex: 3,
-            child: _buildDescription(),
-          ),
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                CommonButton(
-                  onTap: () {},
-                  title: 'Buy now',
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -125,6 +99,7 @@ class OfferItem extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.max,
       children: [
         SingleChildScrollView(
           child: Container(
@@ -137,6 +112,12 @@ class OfferItem extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ),
+        ),
+        CommonButton(
+          backgroundColor: AppColors.textColor,
+          onTap: onBuyNow ?? () {},
+          title: 'Buy now',
+          padding: const EdgeInsets.symmetric(horizontal: 16),
         ),
       ],
     );
@@ -179,31 +160,30 @@ class OfferItem extends StatelessWidget {
     );
   }
 
-  Row _buildTitle() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      mainAxisSize: MainAxisSize.max,
-      children: [
-        Text(
-          offer.title,
-          style: TextStyle(
-            color: AppColors.textColor,
-            fontWeight: FontWeight.w800,
-            fontSize: 18,
-          ),
-          maxLines: 2,
+  Widget _buildTitle() {
+    return Container(
+      padding: const EdgeInsets.only(right: 60),
+      child: Text(
+        offer.title,
+        style: TextStyle(
+          color: AppColors.textColor,
+          fontWeight: FontWeight.w800,
+          fontSize: 18,
         ),
-      ],
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+      ),
     );
   }
 
-  Align _buildDiscountPercent() {
+  Widget _buildDiscountPercent() {
     return Align(
       alignment: Alignment.bottomRight,
       child: Container(
         width: 55,
         height: 55,
         padding: const EdgeInsets.all(8),
+        margin: const EdgeInsets.all(8),
         decoration: const BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.red,
