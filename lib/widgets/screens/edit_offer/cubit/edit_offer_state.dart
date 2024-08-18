@@ -11,6 +11,7 @@ class EditOfferState extends Equatable {
     required this.originalPriceController,
     required this.discountedPriceController,
     required this.createAtPriceController,
+    required this.updateAtPriceController,
   });
   final Offer? offer;
   final LoadStatus loadStatus;
@@ -20,6 +21,7 @@ class EditOfferState extends Equatable {
   final TextEditingController originalPriceController;
   final TextEditingController discountedPriceController;
   final TextEditingController createAtPriceController;
+  final TextEditingController updateAtPriceController;
 
   factory EditOfferState.init(
     Offer? offer,
@@ -34,11 +36,18 @@ class EditOfferState extends Equatable {
       originalPriceController:
           TextEditingController(text: offer?.originalPrice.toString()),
       discountedPriceController:
-          TextEditingController(text: offer?.discountPercentage.toString()),
+          TextEditingController(text: offer?.discountedPrice.toString()),
       createAtPriceController: TextEditingController(
         text: offer != null
             ? Helper().formatDateTimeToHHMMDdMmYyyy(
                 offer.createdAt,
+              )
+            : null,
+      ),
+      updateAtPriceController: TextEditingController(
+        text: offer != null && offer.updatedAt != null
+            ? Helper().formatDateTimeToHHMMDdMmYyyy(
+                offer.updatedAt!,
               )
             : null,
       ),
@@ -47,13 +56,13 @@ class EditOfferState extends Equatable {
 
   @override
   List<Object> get props => [
-        offer!,
         loadStatus,
         titleController,
         descriptionController,
         discountPercentageController,
         originalPriceController,
         discountedPriceController,
+        updateAtPriceController,
       ];
 
   EditOfferState copyWith({
@@ -64,6 +73,7 @@ class EditOfferState extends Equatable {
     TextEditingController? discountPercentageController,
     TextEditingController? originalPriceController,
     TextEditingController? discountedPriceController,
+    TextEditingController? updateAtPriceController,
   }) {
     return EditOfferState(
       loadStatus: loadStatus ?? this.loadStatus,
@@ -78,6 +88,8 @@ class EditOfferState extends Equatable {
       discountedPriceController:
           discountedPriceController ?? this.discountedPriceController,
       createAtPriceController: createAtPriceController,
+      updateAtPriceController:
+          updateAtPriceController ?? this.updateAtPriceController,
     );
   }
 }

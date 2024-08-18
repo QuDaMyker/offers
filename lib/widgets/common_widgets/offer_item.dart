@@ -14,8 +14,10 @@ class OfferItem extends StatelessWidget {
     this.height,
     this.width,
     this.onTap,
+    this.onBuyNow,
   });
   final Function()? onTap;
+  final Function()? onBuyNow;
   final Offer offer;
   final double? height;
   final double? width;
@@ -73,7 +75,7 @@ class OfferItem extends StatelessWidget {
                   right: 10,
                   child: CommonButton(
                     backgroundColor: AppColors.textColor,
-                    onTap: () {},
+                    onTap: onBuyNow ?? () {},
                     title: 'Buy now',
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                   ),
@@ -195,30 +197,25 @@ class OfferItem extends StatelessWidget {
     );
   }
 
-  Stack _buildTopComponent() {
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        _buildDiscountPercent(),
-      ],
-    );
-  }
-
   Align _buildDiscountPercent() {
     return Align(
       alignment: Alignment.bottomRight,
       child: Container(
-        padding: const EdgeInsets.all(12),
+        width: 55,
+        height: 55,
+        padding: const EdgeInsets.all(8),
         decoration: const BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.red,
         ),
-        child: const Text(
-          '30%',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w700,
-            fontSize: 16,
+        child: Center(
+          child: Text(
+            '${offer.discountPercentage}%',
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w700,
+              fontSize: 12,
+            ),
           ),
         ),
       ),

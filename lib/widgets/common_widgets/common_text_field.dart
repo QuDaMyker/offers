@@ -10,6 +10,8 @@ class CommonTextField extends StatelessWidget {
     this.enable,
     this.textInputType,
     this.suffixText,
+    this.validator,
+    this.onChanged,
   });
   final bool? enable;
   final String? hint;
@@ -17,6 +19,8 @@ class CommonTextField extends StatelessWidget {
   final IconData? prefixIcon;
   final TextInputType? textInputType;
   final String? suffixText;
+  final String Function(String?)? validator;
+  final void Function(String)? onChanged;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,12 +29,10 @@ class CommonTextField extends StatelessWidget {
         controller: controller,
         textInputAction: TextInputAction.done,
         keyboardType: textInputType ?? TextInputType.text,
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please fill value';
-          }
-          return null;
-        },
+        validator: validator ??
+            (value) =>
+                value == null || value.isEmpty ? 'Please fill value' : null,
+        onChanged: onChanged,
         textAlign: TextAlign.end,
         enabled: enable,
         maxLines: 1,

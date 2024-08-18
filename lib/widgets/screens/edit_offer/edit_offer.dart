@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:offers/common/constants.dart';
-import 'package:offers/common/enum/load_staus.dart';
+import 'package:offers/common/enum/load_status.dart';
 import 'package:offers/models/offer.dart';
 import 'package:offers/widgets/common_widgets/common_button.dart';
 import 'package:offers/widgets/common_widgets/common_text_field.dart';
@@ -24,6 +24,9 @@ class EditOffer extends StatelessWidget {
         if (state.loadStatus == LoadStatus.Error) {
           ScaffoldMessenger.of(context)
               .showSnackBar(notiBar("Update Offer Error", true));
+        }
+        if (state.loadStatus == LoadStatus.Done) {
+          Navigator.of(context).pop();
         }
       },
       builder: (context, state) {
@@ -65,33 +68,49 @@ class EditOffer extends StatelessWidget {
                               ],
                             ),
                           ),
-                    CustomRow(
-                      title: 'Title',
-                      controller: state.titleController,
-                      textInputType: TextInputType.text,
-                    ),
-                    CustomRow(
-                      title: 'Description',
-                      controller: state.descriptionController,
-                      textInputType: TextInputType.text,
-                    ),
-                    CustomRow(
-                      title: 'DiscountPercentage',
-                      controller: state.discountPercentageController,
-                      textInputType: TextInputType.number,
-                      suffixText: '%',
-                    ),
-                    CustomRow(
-                      title: 'OriginalPrice',
-                      controller: state.originalPriceController,
-                      textInputType: TextInputType.number,
-                      suffixText: '\$',
-                    ),
-                    CustomRow(
-                      title: 'DiscountedPrice',
-                      controller: state.discountedPriceController,
-                      textInputType: TextInputType.number,
-                      suffixText: '\$',
+                    Form(
+                      key: context.read<EditOfferCubit>().formKeyLogin,
+                      child: Column(
+                        children: [
+                          CustomRow(
+                            title: 'Title',
+                            controller: state.titleController,
+                            textInputType: TextInputType.text,
+                            enable: state.loadStatus != LoadStatus.Loading,
+                          ),
+                          CustomRow(
+                            title: 'Description',
+                            controller: state.descriptionController,
+                            textInputType: TextInputType.text,
+                            enable: state.loadStatus != LoadStatus.Loading,
+                          ),
+                          CustomRow(
+                            title: 'DiscountPercentage',
+                            controller: state.discountPercentageController,
+                            textInputType: TextInputType.number,
+                            suffixText: '%',
+                            enable: state.loadStatus != LoadStatus.Loading,
+                            onChange:
+                                context.read<EditOfferCubit>().onChangePrice,
+                          ),
+                          CustomRow(
+                            title: 'OriginalPrice',
+                            controller: state.originalPriceController,
+                            textInputType: TextInputType.number,
+                            suffixText: '\$',
+                            enable: state.loadStatus != LoadStatus.Loading,
+                            onChange:
+                                context.read<EditOfferCubit>().onChangePrice,
+                          ),
+                          CustomRow(
+                            title: 'DiscountedPrice',
+                            controller: state.discountedPriceController,
+                            textInputType: TextInputType.number,
+                            suffixText: '\$',
+                            enable: false,
+                          ),
+                        ],
+                      ),
                     ),
                     addNew
                         ? const SizedBox()
@@ -100,15 +119,33 @@ class EditOffer extends StatelessWidget {
                             enable: false,
                             controller: state.createAtPriceController,
                           ),
+                    addNew
+                        ? const SizedBox()
+                        : offer!.updatedAt == null
+                            ? const SizedBox()
+                            : CustomRow(
+                                title: 'UpdateAt',
+                                enable: false,
+                                controller: state.updateAtPriceController,
+                              ),
                   ],
                 ),
               ),
-              CommonButton(
-                backgroundColor: AppColors.textColor,
-                margin: const EdgeInsets.symmetric(horizontal: 16),
-                title: addNew ? 'Add' : 'Update now',
-                onTap: () {},
-              ),
+              state.loadStatus != LoadStatus.Loading
+                  ? CommonButton(
+                      backgroundColor: AppColors.textColor,
+                      margin: const EdgeInsets.symmetric(horizontal: 16),
+                      title: addNew ? 'Add' : 'Update now',
+                      onTap: () {
+                        addNew
+                            ? context.read<EditOfferCubit>().addOffer()
+                            : context.read<EditOfferCubit>().editOffer(offer!);
+                      },
+                    )
+                  : SizedBox(
+                      height: 40,
+                      child: loadingWidget(),
+                    ),
               Container(
                 padding: const EdgeInsets.all(8),
                 child: Padding(
@@ -157,6 +194,7 @@ class CustomRow extends StatelessWidget {
     this.margin,
     this.textInputType,
     this.suffixText,
+    this.onChange,
   });
   final bool? enable;
   final String title;
@@ -165,6 +203,7 @@ class CustomRow extends StatelessWidget {
   final EdgeInsetsGeometry? margin;
   final TextInputType? textInputType;
   final String? suffixText;
+  final void Function(String)? onChange;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -192,6 +231,7 @@ class CustomRow extends StatelessWidget {
               controller: controller,
               enable: enable,
               suffixText: suffixText,
+              onChanged: onChange,
             ),
           ),
         ],

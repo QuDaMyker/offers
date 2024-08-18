@@ -64,9 +64,9 @@ class Offer {
       discountPercentage: map['discountPercentage'] as double,
       originalPrice: map['originalPrice'] as double,
       discountedPrice: map['discountedPrice'] as double,
-      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int),
+      createdAt: DateTime.parse(map['createdAt'] as String),
       updatedAt: map['updatedAt'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['updatedAt'] as int)
+          ? DateTime.parse(map['updatedAt'] as String)
           : null,
     );
   }

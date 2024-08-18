@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:offers/common/constants.dart';
 import 'package:offers/main_cubit.dart';
 import 'package:offers/repositories/api.dart';
@@ -9,7 +10,9 @@ import 'package:offers/repositories/log_impl.dart';
 import 'package:offers/routes.dart';
 import 'package:offers/widgets/screens/list_offer/list_offer_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
   runApp(
     RepositoryProvider<Log>(
       create: (context) => LogImpl(),
