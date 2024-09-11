@@ -15,7 +15,7 @@ jobs:
       - uses: actions/setup-java@v4.3.0
         with:
           distribution: 'temurin'
-          java-version: '22'
+          java-version: '19'
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
